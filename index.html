@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Show Current Location</title>
+    <script>
+        function showLocation() {
+            // Check if the Geolocation API is supported by the user's browser
+            if ("geolocation" in navigator) {
+                // Request permission from the user to access their location
+                navigator.geolocation.getCurrentPosition(function (position) {
+                    // Get the user's current location
+                    var latitude = position.coords.latitude;
+                    var longitude = position.coords.longitude;
+
+                    document.getElementById("location").innerHTML = latitude + " " + longitude;
+
+                    var url = "https://api.aladhan.com/v1/timings?latitude=" + latitude + "&longitude=" + longitude + "&method=1";
+
+                    // Fetch the JSON data from the API
+                    fetch(url)
+                        .then(response => response.json())
+                        .then(data => {
+                            // Display the JSON data on the page
+                            document.getElementById("timings").innerHTML
+                                = "Fajr: " + data.data.timings.Fajr + "<br>"
+                                + "Sunrise: " + data.data.timings.Sunrise + "<br>"
+                                + "Dhuhr: " + data.data.timings.Dhuhr + "<br>"
+                                + "Asr: " + data.data.timings.Asr + "<br>"
+                                + "Sunset: " + data.data.timings.Sunset + "<br>"
+                                + "Maghrib: " + data.data.timings.Maghrib + "<br>"
+                                + "Isha: " + data.data.timings.Isha + "<br>"
+                                + "Isha: " + data.data.date.readable;
+                        })
+                        .catch(error => {
+                            // Handle any errors or exceptions that may occur
+                            console.error(error);
+                        });
+                }, function (error) {
+                    // Handle any errors or exceptions that may occur
+                    console.error(error);
+                    document.getElementById("timings").innerHTML = "Give location permission for show current location timing";
+                });
+            } else {
+                // Handle the case where the Geolocation API is not supported
+                console.error("Geolocation is not supported by this browser.");
+
+            }
+        }
+
+        const url = "https://randomuser.me/api";
+
+        // Fetch the JSON data from the API
+        fetch(url)
+            .then(response => response.json())
+            .then(data => {
+                // Get the gender of the first person in the results array
+                const gender = data.results[0].gender;
+                const picture = data.results[0].picture.large;
+
+                // Display the gender on the page
+                document.getElementById("people").innerHTML = "Gender: " + gender + "<br>" + picture;
+            })
+            .catch(error => {
+                // Handle any errors or exceptions that may occur
+                console.error(error);
+            });
+
+
+
+
+    </script>
+</head>
+
+<body onload="showLocation()">
+    <h1>Show Current Location</h1>
+    <p id="timings"></p>
+    <p id="location"></p>
+    <p id="people"></p>
+
+</body>
+
+</html>
