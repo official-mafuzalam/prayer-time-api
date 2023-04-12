@@ -54,19 +54,18 @@
         fetch(url)
             .then(response => response.json())
             .then(data => {
-                // Get the gender of the first person in the results array
+                // Get the gender and picture of the first person in the results array
                 const gender = data.results[0].gender;
                 const picture = data.results[0].picture.large;
 
-                // Display the gender on the page
-                document.getElementById("people").innerHTML = "Gender: " + gender + "<br>" + picture;
+                // Display the gender and picture on the page
+                document.getElementById("people").innerHTML = "Gender: " + gender;
+                document.getElementById("picture").src = picture;
             })
             .catch(error => {
                 // Handle any errors or exceptions that may occur
                 console.error(error);
             });
-
-
 
 
     </script>
@@ -77,6 +76,7 @@
     <p id="timings"></p>
     <p id="location"></p>
     <p id="people"></p>
+    <img id="picture" src="" alt="" srcset="">
 
 </body>
 
